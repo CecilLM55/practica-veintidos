@@ -28,22 +28,24 @@ router.post('/addUser', (req, res) => {
 .catch((error) => {res.json({message:error})}); // si encuentra un error, evita que crashee, pues atrapa el error.
 });
 
+// endpoint para visualizar la vista update
 router.get('/findById/:id', (req, res) => {
-    User.findById(req.params.id)
-    .then((myUser) => {res.render('updateUser', {myUser})})
-    .catch((error) => {res.json({menssage:error})});
+    User.findById(req.params.id) // metodo que regresa una promesa
+    .then((myUser) => {res.render('updateUser', {myUser})}) // si es correcto permite editar el documento en la vista
+    .catch((error) => {res.json({menssage:error})}); // mensaje de error en caso de fallas
 });
 
+// endpoint con metodo post para actualizar el documento.
 router.post('/updateUser', (req, res) => {
-    const updateUser = User.findByIdAndUpdate(req.body.objId,
+    const updateUser = User.findByIdAndUpdate(req.body.objId, // actualiza el documento
         {
         name: req.body.name, // accede a los elementos del body HTML.
         email: req.body.email,
         password: req.body.password
     });
 
-    updateUser // este metodo ayuda a persistir el nuevo usuario.
-.then((data) => {res.redirect('/usuario')}) // si hay datos entonces se redirecciona a la ruta /usuario.
+    updateUser
+.then((data) => {res.redirect('/usuario')}) // si los datos se actualizan, se redirecciona a la ruta /usuario.
 .catch((error) => {res.json({message:error})}); // si encuentra un error, evita que crashee, pues atrapa el error.
 });
 
